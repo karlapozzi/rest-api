@@ -46,8 +46,12 @@ module.exports = (sequelize) => {
       }
     },
     password: {
-      type: DataTypes.VIRTUAL,
+      type: DataTypes.STRING,
       allowNull: false,
+      // set(val) {
+      //   const hashedPassword = bcrypt.hashSync(val, 10);
+      //   this.setDataValue('confirmedPassword', hashedPassword);
+      // },
       validate: {
         notNull: {
           msg: 'A password is required'
@@ -62,6 +66,16 @@ module.exports = (sequelize) => {
       }
     }
   }, { sequelize });
+
+  User.associate = (models) => {
+    User.hasMany(models.Course, {
+      as: 'instructor', // alias
+      foreignKey: {
+        fieldName: 'instructorUserId',
+        allowNull: false,
+      },
+    });
+  };
 
   return User;
 };
