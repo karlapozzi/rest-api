@@ -38,7 +38,15 @@ router.post('/users', asyncHandler(async (req, res) => {
 
 // Route to get all courses
 router.get('/courses', asyncHandler(async (req, res) => {
-  const courses = await Course.findAll();
+  const courses = await Course.findAll({
+    attributes: [
+      'title', 
+      'description', 
+      'estimatedTime', 
+      'materialsNeeded',
+       'userId'
+    ]
+  });
   res.json(courses);
 }));
 
@@ -46,7 +54,13 @@ router.get('/courses', asyncHandler(async (req, res) => {
 router.get('/courses/:id', asyncHandler(async (req, res, next) => {
   const course = await Course.findByPk(req.params.id);
   if (course) {
-    res.json(course);
+    res.json({
+      title: course.title,
+      description: course.description,
+      estimatedTime: course.estimatedTime,
+      materialsNeeded: course.materialsNeeded,
+      userId: course.userId,
+    });
   } else {
     next();
   }
