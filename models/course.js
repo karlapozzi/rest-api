@@ -30,18 +30,10 @@ module.exports = (sequelize) => {
       }
     },
     estimatedTime: {
-      type: DataTypes.STRING,
-      // allowNull: false,
-      // validate: {
-
-      // }
+      type: DataTypes.STRING
     },
     materialsNeeded: {
-      type: DataTypes.STRING,
-      // allowNull: false,
-      // validate: {
-
-      // }
+      type: DataTypes.STRING
     }
   }, { sequelize });
 
