@@ -49,7 +49,7 @@ module.exports = (sequelize) => {
     Course.belongsTo(models.User, {
       as: 'instructor', // alias
       foreignKey: {
-        fieldName: 'instructorUserId',
+        fieldName: 'userId',
         allowNull: false,
       },
       onDelete: 'cascade',
