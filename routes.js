@@ -12,7 +12,7 @@ const router = express.Router();
 //Route to return current authenticated user for GET /users requests
 router.get('/users', authenticateUser, asyncHandler(async (req, res) => {
   const user = req.currentUser;
-
+  // Filter out password, created_at, and updated_at
   res.json({
     firstName: user.firstName,
     lastName: user.lastName,
@@ -39,6 +39,7 @@ router.post('/users', asyncHandler(async (req, res) => {
 // Route to get all courses
 router.get('/courses', asyncHandler(async (req, res) => {
   const courses = await Course.findAll({
+    // Filter out created_at and updated_at
     attributes: [
       'title', 
       'description', 
@@ -54,6 +55,7 @@ router.get('/courses', asyncHandler(async (req, res) => {
 router.get('/courses/:id', asyncHandler(async (req, res, next) => {
   const course = await Course.findByPk(req.params.id);
   if (course) {
+    // Filter out created_at and updated_at
     res.json({
       title: course.title,
       description: course.description,
@@ -87,6 +89,7 @@ router.put('/courses/:id', authenticateUser, asyncHandler(async (req, res, next)
   try {
     const course = await Course.findByPk(req.params.id);
     if (course) {
+      // Course instructor must be current auth'd user
       if (course.userId === req.currentUser.id) {
         await course.update(req.body);
         res.status(204).end();
@@ -111,6 +114,7 @@ router.delete('/courses/:id', authenticateUser, asyncHandler(async (req, res, ne
   try {
     const course = await Course.findByPk(req.params.id);
     if (course) {
+      // Course instructor must be current auth'd user
       if (course.userId === req.currentUser.id) {
         await course.destroy();
         res.status(204).end();
