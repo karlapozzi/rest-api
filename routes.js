@@ -53,7 +53,7 @@ router.get('/courses/:id', asyncHandler(async (req, res, next) => {
 }));
 
 // Route to create a course
-router.post('/courses', asyncHandler(async (req, res) => {
+router.post('/courses', authenticateUser, asyncHandler(async (req, res) => {
   try {
     const course = await Course.create(req.body);
     res.location(`/courses/${course.id}`);
@@ -69,7 +69,7 @@ router.post('/courses', asyncHandler(async (req, res) => {
 }));
 
 // Route to update a course with a PUT request
-router.put('/courses/:id', asyncHandler(async (req, res, next) => {
+router.put('/courses/:id', authenticateUser, asyncHandler(async (req, res, next) => {
   try {
     const course = await Course.findByPk(req.params.id);
     if (course) {
@@ -89,7 +89,7 @@ router.put('/courses/:id', asyncHandler(async (req, res, next) => {
 }));
 
 // Route to update a course with a DELETE request
-router.delete('/courses/:id', asyncHandler(async (req, res, next) => {
+router.delete('/courses/:id', authenticateUser, asyncHandler(async (req, res, next) => {
   try {
     const course = await Course.findByPk(req.params.id);
     if (course) {
