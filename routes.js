@@ -46,6 +46,12 @@ router.get('/courses', asyncHandler(async (req, res) => {
       'estimatedTime', 
       'materialsNeeded',
        'userId'
+    ],
+    include: [
+      {
+        model: User,
+        attributes: ['firstName', 'lastName']
+      }
     ]
   });
   res.json(courses);
@@ -53,16 +59,24 @@ router.get('/courses', asyncHandler(async (req, res) => {
 
 // Route to get a specific course
 router.get('/courses/:id', asyncHandler(async (req, res, next) => {
-  const course = await Course.findByPk(req.params.id);
+  const course = await Course.findByPk(req.params.id, {
+    attributes: [
+      'title', 
+      'description', 
+      'estimatedTime', 
+      'materialsNeeded',
+       'userId'
+    ],
+    include: [
+      {
+        model: User,
+        attributes: ['firstName', 'lastName']
+      }
+    ]
+  });
   if (course) {
     // Filter out created_at and updated_at
-    res.json({
-      title: course.title,
-      description: course.description,
-      estimatedTime: course.estimatedTime,
-      materialsNeeded: course.materialsNeeded,
-      userId: course.userId,
-    });
+    res.json(course);
   } else {
     next();
   }
